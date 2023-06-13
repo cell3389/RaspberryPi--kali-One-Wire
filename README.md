@@ -1,3 +1,29 @@
+在Raspberry Pi Kali系统下实现上述操作，需要进行以下修改：
+
+1. 安装dnsmasq软件包，如果没有安装的话。在终端中运行以下命令：`sudo apt-get install dnsmasq`
+
+2. 在Raspberry Pi Kali系统下，网络接口的名称通常为eth0而不是usb0。在第25行代码中，将`ifup usb0`修改为`ifup eth0`以启用网络接口。
+
+3. Raspberry Pi Kali系统默认使用systemd-resolved作为DNS解析程序，因此需要修改dnsmasq的配置文件以确保它能够正常工作。打开/etc/dnsmasq.conf文件，并在文件末尾添加以下行：
+
+```
+no-resolv
+interface=eth0
+dhcp-range=192.168.200.2,192.168.200.254,12h
+dhcp-option=3,192.168.200.1
+```
+
+4. 在Raspberry Pi Kali系统下，udevadm命令的语法略有不同。在第23行代码中，将`udevadm settle -t 5 || :`修改为`udevadm settle --timeout=5 || :`。
+
+5. Raspberry Pi Kali系统上可能需要使用root权限来运行脚本。可以使用以下命令来授予脚本root权限：
+
+```
+sudo chmod +x script.sh
+sudo ./script.sh
+``` 
+
+其中，`script.sh`是脚本文件的名称。
+
 # RaspberryPi-One-Wire
 # 零成本，一根线，iPad作为树莓派的屏幕
 Use a single USB-C cable to transfer data between RaspberryPi 4B and iPad
